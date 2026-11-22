@@ -1,0 +1,15 @@
+{
+  "name": "jes-registration-platform",
+  "version": "1.0.0",
+  "description": "منصة مركزية لإدارة جلسات التسجيل وطلبات الانضمام لعدة بوتات واتساب (aljesat-bot)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "create-bot": "node create-bot.js"
+  },
+  "engines": { "node": ">=18.0.0" },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "license": "MIT"
+}
