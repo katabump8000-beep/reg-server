@@ -42,6 +42,22 @@ function load() {
 let db = load();
 let saveTimer = null;
 
+/* البوتات (API keys) تُقرأ من متغير بيئة BOT_KEYS بدل ملف القرص المؤقت، حتى لا تضيع عند نوم
+   الخدمة المجاني وإعادة إقلاعها (القرص هناك غير دائم). الصيغة:
+   BOT_KEYS = bot1:secret1,bot2:secret2,bot3:secret3
+   create-bot.js يبقى مفيداً فقط لتوليد سر عشوائي آمن تضيفه بنفسك لهالمتغير. */
+(function applyBotKeysEnv() {
+    const raw = String(process.env.BOT_KEYS || "").trim();
+    if (!raw) return;
+    for (const pair of raw.split(",")) {
+        const idx = pair.indexOf(":");
+        if (idx < 1) continue;
+        const id = pair.slice(0, idx).trim();
+        const secret = pair.slice(idx + 1).trim();
+        if (id && secret) db.bots[id] = { apiKeySecret: secret, createdAt: (db.bots[id] && db.bots[id].createdAt) || Date.now() };
+    }
+})();
+
 function saveNow() {
     try {
         fs.mkdirSync(DATA_DIR, { recursive: true });
